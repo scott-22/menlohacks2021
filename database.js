@@ -16,7 +16,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     id: String, //stores blockchain address
     username: String,
-    userType: Number //what kind of organization
+    usertype: Number //what kind of organization
 });
 
 var users = db.model('users', userSchema); //this is a comment

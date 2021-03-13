@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  h1 Please sign up
+  //- TODO: add verification
+  form#signup(action="/api/adduser" method="POST")
+    .name
+      label(for="name") Name:
+      input(type="text" name="name" required="required")
+    .organization 
+      label(for="type") Organization type: 
+      select(name="type" required="required")
+        option(value=0) Production
+        option(value=1) Shipping
+        option(value=2) End User
+    .address(style="display: none;")
+      input#address(type="text" name="address" required="required")
+    .submit
+      input(type="submit" value="Submit")
+
+block endscripts 
+  script(src="/javascripts/web3.min.js")
+  script(src="/javascripts/initweb3.js")
+  script.
+    var web3;
+
+    window.onload = async () => {
+        web3 = await initweb3();
+        console.log(web3);
+
+        address = (await web3.eth.getAccounts())[0];
+        document.getElementById("address").innerHTML = address;
+    }
