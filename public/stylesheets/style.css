@@ -2,6 +2,7 @@ body {
   padding: 0 50px;
   margin: 0;
   font: 25px 'Montserrat', sans-serif;
+  color: black;
 }
 
 nav {
@@ -29,5 +30,5 @@ nav a {
 }
 
 nav a:hover {
-  color: blue;
+  color: black;
 }
