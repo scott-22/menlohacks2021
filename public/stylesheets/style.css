@@ -1,8 +1,33 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  padding: 0 50px;
+  margin: 0;
+  font: 25px 'Montserrat', sans-serif;
 }
 
-a {
-  color: #00B7FF;
+nav {
+  margin: 0px;
+  height: 80px;
+  vertical-align: text-bottom;
+}
+
+nav ul {
+  margin: auto;
+  padding: 30px;
+}
+
+nav li {
+  float: right;
+  margin: 0;
+  display: inline;
+}
+
+nav a {
+  font-size: 20px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: black;
+}
+
+nav a:hover {
+  color: blue;
 }
