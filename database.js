@@ -19,4 +19,8 @@ var userSchema = new Schema({
     userType: Number //what kind of organization
 });
 
-var users = db.model('users', userSchema);
+var users = db.model('users', userSchema); //this is a comment
+
+module.exports = {
+    users: users
+}
