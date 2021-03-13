@@ -2,4 +2,15 @@ extends layout
 
 block content
   h1 User page
-  p Welcome to user page 
+  p Welcome to user page
+
+block endscripts 
+  script(src="/javascripts/web3.min.js")
+  script(src="/javascripts/initweb3.js")
+  script.
+    var web3;
+
+    window.onload = async () => {
+        web3 = await initweb3();
+        console.log(web3);
+    }
