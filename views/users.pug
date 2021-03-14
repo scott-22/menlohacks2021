@@ -1,8 +1,8 @@
 extends layout
 
 block content
-  h1 User page
-  p Welcome to user page
+  h1#welcome Loading...
+  p#address
 
 block endscripts 
   script(src="/javascripts/web3.min.js")
@@ -15,5 +15,7 @@ block endscripts
         web3 = await initweb3();
         address = (await web3.eth.getAccounts())[0];
 
-        requireaccount(address);
+        res = await requireaccount(address);
+        document.getElementById("welcome").innerHTML = `Welcome, ${res.username}`;
+        document.getElementById("address").innerHTML = `Your address: ${res.id}`;
     }

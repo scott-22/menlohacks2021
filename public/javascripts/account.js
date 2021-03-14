@@ -5,6 +5,7 @@ async function requireaccount(address, reverse) {
         else {
             response = await response.json();
             console.log(response);
+            return response
         }
     }
     else if (response.status == 200) window.location.replace("/users");
