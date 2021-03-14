@@ -1,10 +1,10 @@
-async function shippingCenter() {
+async function shippingCenter(web3) {
     let abi = await (await fetch('/api/shippingcenter/abi')).json();
     let shippingaddress = (await (await fetch('/api/shippingcenter/address')).json()).address;
     return new web3.eth.Contract(abi, shippingaddress);
 }
 
-async function getShipments() {
+async function getShipments(shippingContract) {
     let shipments = await shippingContract.methods.getShipments().call();
     let shipmentContract = new web3.eth.Contract(await (await fetch('/api/shipment/abi')).json());
     console.log(shipments);
@@ -23,8 +23,8 @@ async function getShipments() {
     return shipmentArr;
 }
 
-async function updateTable() {
-    let shipments = await getShipments();
+async function updateTable(shippingContract) {
+    let shipments = await getShipments(shippingContract);
     if (shipments.length > 0) {
         let table = document.getElementById("shipments");
         table.getElementsByTagName("tbody")[0].innerHTML = '';
@@ -67,28 +67,22 @@ async function updateUsers() {
     }
 }
 
-function createShipment(description, value) {
-    shippingContract.methods.createShipment(value).send({from: address, gas: 6721975})
+function createShipment(shippingContract, description, value) {
+    shippingContract.methods.createShipment(value).send({from: address})
     .on('error', error => {
         alert("Something went wrong!");
     });
 }
 
-function transferShipment() {
-    shippingContract.methods.createShipment(
-        web3.utils.fromAscii(description),
-        value
-    ).send({from: address, gas: 6721975})
+function transferShipment(shippingContract) {
+    shippingContract.methods
     .on('error', error => {
         alert("Something went wrong!");
     });
 }
 
-function completeShipment() {
-    shippingContract.methods.completeShipment(
-        web3.utils.fromAscii(description),
-        value
-    ).send({from: address, gas: 6721975})
+function completeShipment(shippingContract) {
+    shippingContract.methods
     .on('error', error => {
         alert("Something went wrong!");
     });

@@ -70,7 +70,7 @@ block endscripts
         web3 = await initweb3();
         address = (await web3.eth.getAccounts())[0]
         res = await requireaccount(address);
-        shippingContract = await shippingCenter();
+        shippingContract = await shippingCenter(web3);
 
         document.getElementById("welcome").innerHTML = `Welcome, ${res.username}`;
         document.getElementById("address").innerHTML = `Your address: ${res.id}`;
@@ -79,15 +79,14 @@ block endscripts
         if (res.usertype == 0) createshipmentbutton.style.display = "inline";
         if (res.usertype == 2) completeshipmentbutton.style.display = "inline";
 
-        console.log(await getShipments());
-        await updateUsers();
+        updateTable(shippingContract);
     }
 
-    updateTable();
+    updateUsers();
 
     async function createShipmentForm() {
         let form = document.getElementById("createshipmentform");
-        await createShipment(form.elements[0].value, form.elements[1].value);
+        await createShipment(shippingContract, web3, form.elements[0].value, form.elements[1].value);
         await updateTable();
     }
 
