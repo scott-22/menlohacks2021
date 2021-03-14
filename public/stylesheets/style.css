@@ -36,3 +36,85 @@ nav a {
 nav a:hover {
   color: #67cbf9;
 }
+
+form {
+  margin: 20px;
+}
+
+input[type="text"], input[type="number"], select {
+  width: 30%;
+  margin: 15px 0 35px 0;
+  align-items: center;
+  display: block;
+  background-color: #00539b;
+  color: #ffffff;
+  font: 20px 'Montserrat', sans-serif;
+  border: 1px solid #ffffff;
+}
+
+input[type="submit"] {
+  width: 100px;
+  height: 25px;
+  font: 16px 'Montserrat', sans-serif;
+  border: 1px solid #ffffff;
+}
+
+table {
+  width: 75%;
+  margin-bottom: 50px;
+  table-layout: fixed;
+  border: 2px solid #ffffff;
+  border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.425);
+  color: #ffffff;
+}
+
+th, td {
+  border: 2px solid #ffffff81;
+  padding: 15px;
+  text-align: center;
+}
+
+#heading {
+  background-color: #002342;
+}
+
+.modalbutton {
+  display: none;
+  margin: 25px 5px;
+  width: 380px;
+  height: 60px;
+  font: 30px 'Montserrat', sans-serif;
+  background-color: #ffffff;
+  color: #00539b;
+  border: 1px solid #001a53;
+  border-radius: 5px;
+}
+
+.modalbutton:hover {
+  background-color: #d4e3ff;
+  color: #001c35;
+}
+
+.modal {
+  display: none;
+  padding-top: 100px;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  display: none;
+  background-color: #145894;
+  padding: 25px;
+  margin: auto;
+  border: 1px solid #ffffff;
+  border-radius: 2px;
+  width: 50%;
+}

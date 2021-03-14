@@ -4,12 +4,55 @@ block content
   h1#welcome Loading...
   p#address
 
+  button#createshipmentbutton.modalbutton() Create Shipment
+  button#transfershipmentbutton.modalbutton() Transfer Shipment
+  button#completeshipmentbutton.modalbutton() Complete Shipment
+
+  h2 Your shipments:
+  table#shipments
+    thead
+      tr#heading
+        td Description
+        td Doses
+    tbody 
+      tr
+        td Nothing yet...
+
+  #modal.modal      
+    #createshipment.modal-content
+      h2 Enter vaccine shipment
+      form#createshipmentform(onsubmit="createShipmentForm()")
+        .description
+          label(for="description") Description:
+          input(type="text" name="description" required="required")
+        .value
+          label(for="value") Doses:
+          input(type="number" name="value" required="required")
+        .submit
+          input(type="submit" value="Submit")
+
+    #transfershipment.modal-content
+      h2 Select shipment and recipient
+        
+
+    #completeshipment.modal-content
+      h2 Complete your shipment
+
 block endscripts 
   script(src="/javascripts/web3.min.js")
   script(src="/javascripts/initweb3.js")
   script(src="/javascripts/account.js")
+  script(src="/javascripts/shipping.js")
   script.
-    let web3, address;
+    let web3, address, shippingContract;
+
+    let modal = document.getElementById("modal");
+    let createshipmentbutton = document.getElementById("createshipmentbutton");
+    let transfershipmentbutton = document.getElementById("transfershipmentbutton");
+    let completeshipmentbutton = document.getElementById("completeshipmentbutton");
+    let createshipment = document.getElementById("createshipment");
+    let transfershipment = document.getElementById("transfershipment");
+    let completeshipment = document.getElementById("completeshipment");
 
     window.onload = async () => {
         web3 = await initweb3();
@@ -18,4 +61,39 @@ block endscripts
         res = await requireaccount(address);
         document.getElementById("welcome").innerHTML = `Welcome, ${res.username}`;
         document.getElementById("address").innerHTML = `Your address: ${res.id}`;
+
+        transfershipmentbutton.style.display = "inline";
+        if (res.usertype == 0) createshipmentbutton.style.display = "inline";
+        if (res.usertype == 2) completeshipmentbutton.style.display = "inline";
+
+        shippingContract = await shippingCenter();
+        await updateTable();
+    }
+
+    async function createShipmentForm() {
+        let form = document.getElementById("createshipmentform");
+        await createShipment(form.elements[0].value, form.elements[1].value);
+        await updateTable();
+    }
+
+    // modal stuff
+    createshipmentbutton.onclick = () => {
+        modal.style.display = "block";
+        createshipment.style.display = "block";
+    }
+    transfershipmentbutton.onclick = () => {
+        modal.style.display = "block";
+        transfershipment.style.display = "block";
+    }
+    completeshipmentbutton.onclick = () => {
+        modal.style.display = "block";
+        completeshipment.style.display = "block";
+    }
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+            createshipment.style.display = "none";
+            transfershipment.style.display = "none";
+            completeshipment.style.display = "none";
+        }
     }

@@ -3,18 +3,14 @@ pragma experimental ABIEncoderV2;
 
 // Unique shipping token
 contract Shipment {
-    bytes32 public description;
     uint64 public value; // Number of vaccines
     address public owner;
     address public creator; // The original Producer
-    bool public active; // Whether the shipment is on the move (becomes false when it reaches final destination)
 
-    constructor (bytes32 _description, uint64 _value, address _owner, address _creator) public {
-        description = _description;
+    constructor (uint64 _value, address _owner, address _creator) public {
         value = _value;
         owner = _owner;
         creator = _creator;
-        active = true;
     }
 
     modifier requireOwner {
@@ -24,10 +20,6 @@ contract Shipment {
 
     function setOwner(address _owner) public requireOwner {
         owner = _owner;
-    }
-
-    function deactivate() public requireOwner {
-        active = false;
     }
 }
 
@@ -39,8 +31,9 @@ contract ShipmentCenter {
     }
 
     // TODO: Verify address is Producer (0)
-    function createShipment(bytes32 _description, uint64 _value) external {
-        shipments[msg.sender].push(new Shipment(_description, _value, msg.sender, msg.sender));
+    function createShipment(uint64 _value) external {
+        Shipment ship = new Shipment(_value, msg.sender, msg.sender);
+        shipments[msg.sender].push(ship);
     }
 
     function deleteShipment(Shipment ship) internal returns (bool) {
@@ -57,7 +50,6 @@ contract ShipmentCenter {
     // TODO: Add verification
     function transferShipment(address shipment, address to) external {
         Shipment ship = Shipment(shipment);
-        require (ship.active());
         require (deleteShipment(ship));
         ship.setOwner(to);
         shipments[to].push(ship);
@@ -66,7 +58,6 @@ contract ShipmentCenter {
     //TODO: Verify address is End User (2)
     function completeShipment(address shipment) external {
         Shipment ship = Shipment(shipment);
-        ship.deactivate();
         deleteShipment(ship);
     }
 }

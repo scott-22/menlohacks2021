@@ -3,6 +3,8 @@ var router = express.Router();
 
 var database = require('../database');
 var properties = require('../properties.js');
+var ShipmentCenter = require('../build/contracts/ShipmentCenter.json');
+var Shipment = require('../build/contracts/Shipment.json');
 
 // API endpoints
 router.get('/getuser', function(req, res, next) {
@@ -45,8 +47,16 @@ router.post('/adduser', function(req, res, next) {
     }
 });
 
-router.get('/shippingcenter', function(req, res, next) {
-    res.send(properties.shippingCenter);
+router.get('/shippingcenter/address', function(req, res, next) {
+    res.send(JSON.stringify({address: properties.shippingCenter}));
+});
+
+router.get('/shippingcenter/abi', function(req, res, next) {
+    res.json(ShipmentCenter["abi"]);
+});
+
+router.get('/shipment/abi', function(req, res, next) {
+    res.json(Shipment["abi"]);
 });
 
 module.exports = router;
