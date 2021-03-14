@@ -2,7 +2,11 @@ body {
   padding: 0 50px;
   margin: 0;
   font: 25px 'Montserrat', sans-serif;
-  color: black;
+  color: white;
+  background-color: #005096;
+  background-image: url('/images/background.png');
+  background-repeat: no-repeat;
+  background-size: 100vw;
 }
 
 nav {
@@ -26,9 +30,9 @@ nav a {
   font-size: 20px;
   padding: 10px 20px;
   text-decoration: none;
-  color: black;
+  color: white;
 }
 
 nav a:hover {
-  color: black;
+  color: #67cbf9;
 }
