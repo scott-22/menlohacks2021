@@ -3,9 +3,12 @@ var router = express.Router();
 
 // User page
 router.get('/', function(req, res, next) {
-  fetch('/api/getuser')
-    .then(res => response.json)
   res.render('users');
+});
+
+// Create account
+router.get('/signup', function(req, res, next) {
+  res.render('adduser');
 });
 
 module.exports = router;

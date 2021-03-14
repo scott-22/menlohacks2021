@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Please sign up
   //- TODO: add verification
-  form#signup(action="/api/adduser" method="POST")
+  form#signup
     .name
       label(for="name") Name:
       input(type="text" name="name" required="required")
@@ -22,12 +22,30 @@ block endscripts
   script(src="/javascripts/web3.min.js")
   script(src="/javascripts/initweb3.js")
   script.
-    var web3;
+    let web3;
+    let form = document.getElementById('signup');
+    form.onsubmit = async () => {
+        let data = {}
+        for (let i of form.elements) if (i.name) data[i.name] = i.value;
+        console.log(data);
+        let res = await fetch(
+            '/api/adduser',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }
+        );
+        if (res.ok) window.location.replace("/users");
+        else alert((await res.json())["error"]);
+    }
 
     window.onload = async () => {
         web3 = await initweb3();
         console.log(web3);
 
-        address = (await web3.eth.getAccounts())[0];
-        document.getElementById("address").innerHTML = address;
+        let address = (await web3.eth.getAccounts())[0];
+        document.getElementById("address").value = address;
     }

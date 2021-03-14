@@ -8,9 +8,14 @@ block endscripts
   script(src="/javascripts/web3.min.js")
   script(src="/javascripts/initweb3.js")
   script.
-    var web3;
+    let web3;
 
     window.onload = async () => {
         web3 = await initweb3();
         console.log(web3);
+
+        let response = await fetch('/api/getuser');
+        if (response.status != 200) window.location.replace("/users/signup");
+        response = await response.json();
+        console.log(response);
     }
