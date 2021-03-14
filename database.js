@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var properties = require('./properties');
 
 //set up mongoose connection
-var mongoDB = `mongodb+srv://hackathon:${properties.databasePassword}@cluster0.r2v6y.mongodb.net/hackathon?retryWrites=true&w=majority`;
+var mongoDB = properties.databaseURL;
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var db = mongoose.connection;

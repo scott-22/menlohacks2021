@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var database = require('../database');
+var properties = require('../properties.js');
 
 // API endpoints
 router.get('/getuser', function(req, res, next) {
@@ -21,11 +22,6 @@ router.get('/getuser', function(req, res, next) {
 
 // TODO: add verification
 router.post('/adduser', function(req, res, next) {
-    console.log("x");
-    console.log(req.body);
-    console.log(req.body.type);
-    console.log(req.body.address);
-    console.log("x");
     if (!req.body.name || !req.body.type || !req.body.address)
         res.status(400).send(JSON.stringify({error: "Missing field!"}));
     else {
@@ -47,6 +43,10 @@ router.post('/adduser', function(req, res, next) {
                 res.status(400).send(JSON.stringify(err));
             });
     }
+});
+
+router.get('/shippingcenter', function(req, res, next) {
+    res.send(properties.shippingCenter);
 });
 
 module.exports = router;
