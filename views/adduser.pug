@@ -21,8 +21,9 @@ block content
 block endscripts 
   script(src="/javascripts/web3.min.js")
   script(src="/javascripts/initweb3.js")
+  script(src="/javascripts/account.js")
   script.
-    let web3;
+    let web3, address;
     let form = document.getElementById('signup');
     form.onsubmit = async () => {
         let data = {}
@@ -44,11 +45,7 @@ block endscripts
 
     window.onload = async () => {
         web3 = await initweb3();
-        console.log(web3);
-
-        let address = (await web3.eth.getAccounts())[0];
-        let response = await fetch(`/api/getuser?address=${address}`);
-        if (response.status == 200) window.location.replace("/users");
-        
+        address = (await web3.eth.getAccounts())[0];
+        requireaccount(address, true);
         document.getElementById("address").value = address;
     }
