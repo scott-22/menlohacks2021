@@ -35,6 +35,34 @@ async function updateTable() {
             
             td = r.insertCell();
             td.appendChild(document.createTextNode(shipment.value));
+
+            td = r.insertCell();
+            td.style.fontSize = "8px";
+            td.appendChild(document.createTextNode(shipment.self));
+        }
+    }
+}
+
+async function updateUsers() {
+    let allusers = await (await fetch('/api/users')).json();
+    if (allusers.length > 0) {
+        let table = document.getElementById("users");
+        table.getElementsByTagName("tbody")[0].innerHTML = '';
+        for (let user of allusers) {
+            let r = table.insertRow();
+            let td = r.insertCell();
+            td.appendChild(document.createTextNode(user.username));
+            
+            td = r.insertCell();
+            let s;
+            if (user.usertype === 0) s = "Producer";
+            else if (user.usertype === 1) s = "Shipping";
+            else s = "End User";
+            td.appendChild(document.createTextNode(s));
+
+            td = r.insertCell();
+            td.style.fontSize = "8px";
+            td.appendChild(document.createTextNode(user.id));
         }
     }
 }

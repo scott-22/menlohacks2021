@@ -59,4 +59,14 @@ router.get('/shipment/abi', function(req, res, next) {
     res.json(Shipment["abi"]);
 });
 
+router.get('/users', function(req, res, next) {
+    database.users.find()
+        .then(query => {
+            res.send(JSON.stringify(query));
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+
 module.exports = router;

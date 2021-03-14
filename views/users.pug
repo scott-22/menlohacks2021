@@ -11,9 +11,21 @@ block content
   h2 Your shipments:
   table#shipments
     thead
-      tr#heading
+      tr.heading
         td Description
         td Doses
+        td Address
+    tbody 
+      tr
+        td Nothing yet...
+    
+  h2 All users:
+  table#users
+    thead
+      tr.heading
+        td Name
+        td Type
+        td Address
     tbody 
       tr
         td Nothing yet...
@@ -56,19 +68,22 @@ block endscripts
 
     window.onload = async () => {
         web3 = await initweb3();
-        address = (await web3.eth.getAccounts())[0];
-
+        address = (await web3.eth.getAccounts())[0]
         res = await requireaccount(address);
+        shippingContract = await shippingCenter();
+
         document.getElementById("welcome").innerHTML = `Welcome, ${res.username}`;
         document.getElementById("address").innerHTML = `Your address: ${res.id}`;
-
+        
         transfershipmentbutton.style.display = "inline";
         if (res.usertype == 0) createshipmentbutton.style.display = "inline";
         if (res.usertype == 2) completeshipmentbutton.style.display = "inline";
 
-        shippingContract = await shippingCenter();
-        await updateTable();
+        console.log(await getShipments());
+        await updateUsers();
     }
+
+    updateTable();
 
     async function createShipmentForm() {
         let form = document.getElementById("createshipmentform");

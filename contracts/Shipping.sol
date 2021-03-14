@@ -24,21 +24,25 @@ contract Shipment {
 }
 
 contract ShipmentCenter {
-    mapping (address => Shipment[]) shipments;
+    mapping (address => address[]) shipments;
+    Shipment[] z;
+    address s;
     
-    function getShipments() external view returns (Shipment[] memory) {
+    function getShipments() external view returns (address[] memory) {
         return shipments[msg.sender];
     }
 
     // TODO: Verify address is Producer (0)
     function createShipment(uint64 _value) external {
         Shipment ship = new Shipment(_value, msg.sender, msg.sender);
-        shipments[msg.sender].push(ship);
+        shipments[msg.sender].push(address(ship));
+        z.push(ship);
+        s = msg.sender;
     }
 
     function deleteShipment(Shipment ship) internal returns (bool) {
         for (uint32 i = 0; i < shipments[msg.sender].length; ++i)
-            if (shipments[msg.sender][i] == ship) {
+            if (shipments[msg.sender][i] == address(ship)) {
                 require (msg.sender == ship.owner());
                 shipments[msg.sender][i] = shipments[msg.sender][shipments[msg.sender].length-1];
                 shipments[msg.sender].pop();
@@ -52,7 +56,7 @@ contract ShipmentCenter {
         Shipment ship = Shipment(shipment);
         require (deleteShipment(ship));
         ship.setOwner(to);
-        shipments[to].push(ship);
+        shipments[to].push(address(ship));
     }
 
     //TODO: Verify address is End User (2)
