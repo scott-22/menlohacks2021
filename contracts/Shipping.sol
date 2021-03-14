@@ -13,31 +13,27 @@ contract Shipment {
         creator = _creator;
     }
 
-    modifier requireOwner {
-        require (msg.sender == owner);
-        _;
-    }
-
-    function setOwner(address _owner) public requireOwner {
-        owner = _owner;
+    function setOwner(address from, address to) public {
+        require (owner == from);
+        owner = to;
     }
 }
 
 contract ShipmentCenter {
     mapping (address => address[]) shipments;
-    Shipment[] z;
-    address s;
     
-    function getShipments() external view returns (address[] memory) {
+    function getShipments() public view returns (address[] memory) {
         return shipments[msg.sender];
     }
 
+    function get(address x) public view returns (address[] memory) {
+        return shipments[x];
+    }
+
     // TODO: Verify address is Producer (0)
-    function createShipment(uint64 _value) external {
+    function createShipment(uint64 _value) public {
         Shipment ship = new Shipment(_value, msg.sender, msg.sender);
         shipments[msg.sender].push(address(ship));
-        z.push(ship);
-        s = msg.sender;
     }
 
     function deleteShipment(Shipment ship) internal returns (bool) {
@@ -52,15 +48,15 @@ contract ShipmentCenter {
     }
 
     // TODO: Add verification
-    function transferShipment(address shipment, address to) external {
+    function transferShipment(address shipment, address to) public {
         Shipment ship = Shipment(shipment);
         require (deleteShipment(ship));
-        ship.setOwner(to);
-        shipments[to].push(address(ship));
+        ship.setOwner(msg.sender, to);
+        shipments[to].push(shipment);
     }
 
     //TODO: Verify address is End User (2)
-    function completeShipment(address shipment) external {
+    function completeShipment(address shipment) public {
         Shipment ship = Shipment(shipment);
         deleteShipment(ship);
     }

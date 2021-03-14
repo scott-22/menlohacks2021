@@ -45,10 +45,24 @@ block content
 
     #transfershipment.modal-content
       h2 Select shipment and recipient
-        
+      form#transfershipmentform(onsubmit="transferShipmentForm()")
+        .shipment
+          label(for="shipment") Shipment Address:
+          input(type="text" name="shipment" required="required")
+        .recipient
+          label(for="value") Recipient Address:
+          input(type="text" name="recipient" required="required")
+        .submit
+          input(type="submit" value="Submit")
 
     #completeshipment.modal-content
       h2 Complete your shipment
+      form#completeshipmentform(onsubmit="completeShipmentForm()")
+        .shipment
+          label(for="shipment") Shipment Address:
+          input(type="text" name="shipment" required="required")
+        .submit
+          input(type="submit" value="Submit")
 
 block endscripts 
   script(src="/javascripts/web3.min.js")
@@ -86,8 +100,29 @@ block endscripts
 
     async function createShipmentForm() {
         let form = document.getElementById("createshipmentform");
-        await createShipment(shippingContract, form.elements[0].value, form.elements[1].value);
-        await updateTable();
+        shippingContract.methods.createShipment(form.elements[1].value).send({from: address})
+            .then(r => {
+                console.log(r);
+                updateTable();
+            });
+    }
+
+    async function transferShipmentForm() {
+        let form = document.getElementById("transfershipmentform");
+        shippingContract.methods.transferShipment(form.elements[0].value, form.elements[1].value).send({from: address})
+            .then(r => {
+                console.log(r);
+                updateTable();
+            });
+    }
+
+    async function completeShipmentForm() {
+        let form = document.getElementById("completeshipmentform");
+        shippingContract.methods.completeShipment(form.elements[0].value).send({from: address})
+            .then(r => {
+                console.log(r);
+                updateTable();
+            });
     }
 
     // modal stuff

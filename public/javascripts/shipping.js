@@ -5,7 +5,7 @@ async function shippingCenter(web3) {
 }
 
 async function getShipments(shippingContract) {
-    let shipments = await shippingContract.methods.getShipments().call();
+    let shipments = await shippingContract.methods.getShipments().call({from: address});
     let shipmentContract = new web3.eth.Contract(await (await fetch('/api/shipment/abi')).json());
     console.log(shipments);
     shipmentArr = []
@@ -24,23 +24,25 @@ async function getShipments(shippingContract) {
 }
 
 async function updateTable(shippingContract) {
-    let shipments = await getShipments(shippingContract);
-    if (shipments.length > 0) {
-        let table = document.getElementById("shipments");
-        table.getElementsByTagName("tbody")[0].innerHTML = '';
-        for (let shipment of shipments) {
-            let r = table.insertRow();
-            let td = r.insertCell();
-            td.appendChild(document.createTextNode(shipment.description));
-            
-            td = r.insertCell();
-            td.appendChild(document.createTextNode(shipment.value));
-
-            td = r.insertCell();
-            td.style.fontSize = "8px";
-            td.appendChild(document.createTextNode(shipment.self));
-        }
-    }
+    getShipments(shippingContract)
+        .then(shipments => {
+            if (shipments.length > 0) {
+                let table = document.getElementById("shipments");
+                table.getElementsByTagName("tbody")[0].innerHTML = '';
+                for (let shipment of shipments) {
+                    let r = table.insertRow();
+                    let td = r.insertCell();
+                    td.appendChild(document.createTextNode(shipment.description));
+                    
+                    td = r.insertCell();
+                    td.appendChild(document.createTextNode(shipment.value));
+        
+                    td = r.insertCell();
+                    td.style.fontSize = "8px";
+                    td.appendChild(document.createTextNode(shipment.self));
+                }
+            }
+        });
 }
 
 async function updateUsers() {
@@ -65,25 +67,4 @@ async function updateUsers() {
             td.appendChild(document.createTextNode(user.id));
         }
     }
-}
-
-function createShipment(shippingContract, description, value) {
-    shippingContract.methods.createShipment(value).send({from: address})
-    .on('error', error => {
-        alert("Something went wrong!");
-    });
-}
-
-function transferShipment(shippingContract) {
-    shippingContract.methods
-    .on('error', error => {
-        alert("Something went wrong!");
-    });
-}
-
-function completeShipment(shippingContract) {
-    shippingContract.methods
-    .on('error', error => {
-        alert("Something went wrong!");
-    });
 }
