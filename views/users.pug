@@ -86,7 +86,7 @@ block endscripts
 
     async function createShipmentForm() {
         let form = document.getElementById("createshipmentform");
-        await createShipment(shippingContract, web3, form.elements[0].value, form.elements[1].value);
+        await createShipment(shippingContract, form.elements[0].value, form.elements[1].value);
         await updateTable();
     }
 
