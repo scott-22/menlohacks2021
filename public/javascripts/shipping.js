@@ -5,7 +5,7 @@ async function shippingCenter(web3) {
 }
 
 async function getShipments(shippingContract) {
-    let shipments = await shippingContract.methods.getShipments().call({from: address});
+    let shipments = await shippingContract.methods.getShipments().call({from: address, gas: 600000});
     let shipmentContract = new web3.eth.Contract(await (await fetch('/api/shipment/abi')).json());
     console.log(shipments);
     shipmentArr = []

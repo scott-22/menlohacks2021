@@ -33,7 +33,7 @@ block content
   #modal.modal      
     #createshipment.modal-content
       h2 Enter vaccine shipment
-      form#createshipmentform(onsubmit="createShipmentForm()")
+      form#createshipmentform(action="javascript:void(0)" onsubmit="createShipmentForm()")
         .description
           label(for="description") Description:
           input(type="text" name="description" required="required")
@@ -45,7 +45,7 @@ block content
 
     #transfershipment.modal-content
       h2 Select shipment and recipient
-      form#transfershipmentform(onsubmit="transferShipmentForm()")
+      form#transfershipmentform(action="javascript:void(0)" onsubmit="transferShipmentForm()")
         .shipment
           label(for="shipment") Shipment Address:
           input(type="text" name="shipment" required="required")
@@ -57,7 +57,7 @@ block content
 
     #completeshipment.modal-content
       h2 Complete your shipment
-      form#completeshipmentform(onsubmit="completeShipmentForm()")
+      form#completeshipmentform(action="javascript:void(0)" onsubmit="completeShipmentForm()")
         .shipment
           label(for="shipment") Shipment Address:
           input(type="text" name="shipment" required="required")
@@ -100,16 +100,15 @@ block endscripts
 
     async function createShipmentForm() {
         let form = document.getElementById("createshipmentform");
-        shippingContract.methods.createShipment(form.elements[1].value).send({from: address})
+        shippingContract.methods.createShipment(form.elements[1].value).send({from: address, gas: 600000})
             .then(r => {
-                console.log(r);
-                updateTable();
+                window.location.reload();
             });
     }
 
     async function transferShipmentForm() {
         let form = document.getElementById("transfershipmentform");
-        shippingContract.methods.transferShipment(form.elements[0].value, form.elements[1].value).send({from: address})
+        shippingContract.methods.transferShipment(form.elements[0].value, form.elements[1].value).send({from: address, gas: 600000})
             .then(r => {
                 console.log(r);
                 updateTable();
@@ -118,7 +117,7 @@ block endscripts
 
     async function completeShipmentForm() {
         let form = document.getElementById("completeshipmentform");
-        shippingContract.methods.completeShipment(form.elements[0].value).send({from: address})
+        shippingContract.methods.completeShipment(form.elements[0].value).send({from: address, gas: 600000})
             .then(r => {
                 console.log(r);
                 updateTable();
