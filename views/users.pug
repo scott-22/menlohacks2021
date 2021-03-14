@@ -12,9 +12,9 @@ block endscripts
 
     window.onload = async () => {
         web3 = await initweb3();
-        console.log(web3);
+        let address = (await web3.eth.getAccounts())[0];
 
-        let response = await fetch('/api/getuser');
+        let response = await fetch(`/api/getuser?address=${address}`);
         if (response.status != 200) window.location.replace("/users/signup");
         response = await response.json();
         console.log(response);
